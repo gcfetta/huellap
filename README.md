@@ -44,21 +44,6 @@ npm run dev
 
 La aplicación queda disponible en http://localhost:3000.
 
-Variables de entorno
-
-Crear un archivo .env en la raíz (nunca subirlo a GitHub) con:
-
-PORT=3000
-MONGODB_URI=
-SESSION_SECRET=
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-AI_API_KEY=
-EMAIL_USER=
-EMAIL_PASS=
-MATCH_THRESHOLD=70
-MATCH_RADIUS_KM=10
 Estructura del proyecto
 huellitas-match/
 ├── src/
