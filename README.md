@@ -1,26 +1,90 @@
-# HuellApp (Node.js)
+🐾 HuellApp
 
-Sistema multiagente que cruza publicaciones de mascotas perdidas y encontradas por similitud visual (CLIP), zona y fecha. El sistema sugiere; la persona decide.
+Plataforma web para reencontrar mascotas perdidas. Las personas publican mascotas perdidas o encontradas (especie, descripción, foto, zona, fecha y ubicación) y una inteligencia artificial compara las publicaciones y avisa automáticamente cuando encuentra una coincidencia probable.
 
-## Requisitos
-- Node.js 18 o superior (recomendado 20 LTS): https://nodejs.org
-- Internet la primera vez (baja el modelo CLIP, ~350 MB, queda en caché)
 
-## Pasos
-```bash
+¿Cómo funciona?
+La persona se registra y crea una publicación (Perdí o Encontré).
+El sistema filtra publicaciones del tipo opuesto, de la misma especie, cercanas en zona y fecha.
+La IA compara los candidatos y devuelve un puntaje de similitud con una explicación.
+Si el puntaje supera el umbral, se notifica a ambas personas (email y bandeja interna).
+Las personas confirman el reencuentro y la publicación se marca como resuelta.
+
+La IA sugiere, nunca decide: la confirmación final es siempre humana.
+
+Tecnologías
+Capa	Tecnología
+Backend	Node.js + Express
+Frontend	HTML, CSS, JavaScript, plantillas EJS y Bootstrap
+Base de datos	MongoDB Atlas + Mongoose
+Mapas	Leaflet + OpenStreetMap
+Fotos	Cloudinary
+IA	API de un modelo de lenguaje con visión (Claude)
+Emails	Nodemailer
+Requisitos previos
+Node.js (versión LTS)
+Una cuenta gratuita en MongoDB Atlas
+Una cuenta gratuita en Cloudinary
+Una API key del proveedor de IA
+Instalación
+bash
+# 1. Clonar el repositorio
+git clone <URL-DEL-REPOSITORIO>
+cd huellitas-match
+
+# 2. Instalar dependencias
 npm install
-npm run descargar     # baja fotos de prueba a fotos/perdidos (o pongan las suyas)
-npm run evaluar       # mide el top-5 y genera demo_encontrado.jpg
-npm start             # abre http://localhost:3000
-```
 
-## Archivos
-- src/datos.js: carga fotos de fotos/perdidos con zona y fecha ficticias (Delfina)
-- src/modelo.js: CLIP + embeddings + caché (Candela)
-- src/agentes.js: Agente 1 y 3 (Carolina), Agente 2 (Candela)
-- src/evaluacion.js: medida O2, top-5 (Candela)
-- src/servidor.js: API Express (Carolina)
-- public/index.html: interfaz con decisión humana (Carolina)
-- scripts/descargar_demo.js: descarga fotos de prueba gratuitas
+# 3. Crear el archivo de variables de entorno
+cp .env.example .env
+# Completar los valores en .env
 
-Si cambian las fotos de fotos/perdidos, borren data/emb_cache.json.
+# 4. Iniciar el servidor
+npm run dev
+
+La aplicación queda disponible en http://localhost:3000.
+
+Variables de entorno
+
+Crear un archivo .env en la raíz (nunca subirlo a GitHub) con:
+
+PORT=3000
+MONGODB_URI=
+SESSION_SECRET=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+AI_API_KEY=
+EMAIL_USER=
+EMAIL_PASS=
+MATCH_THRESHOLD=70
+MATCH_RADIUS_KM=10
+Estructura del proyecto
+huellitas-match/
+├── src/
+│   ├── models/        # Esquemas de Mongoose (Usuario, Publicacion, Coincidencia, Notificacion)
+│   ├── routes/        # Rutas de Express
+│   ├── controllers/   # Lógica de cada ruta
+│   ├── services/      # Matching con IA, notificaciones, emails
+│   ├── views/         # Plantillas EJS
+│   └── public/        # CSS, JS del cliente e imágenes
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
+
+
+Flujo de trabajo en equipo
+La rama main siempre debe funcionar: no se trabaja directo sobre ella.
+Cada persona trabaja en su propia rama (feature/nombre-de-la-tarea).
+Se integra a main mediante Pull Request revisado por al menos otra persona.
+Commits chicos y con mensajes claros (por ejemplo: Agrega formulario de publicación).
+
+
+Equipo
+Carolina
+Delfina
+Candela
+Licencia
+
+Proyecto académico para hackathon.
