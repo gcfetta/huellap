@@ -1,5 +1,3 @@
-node_modules/
-data/
-fotos/perdidos/*
-!fotos/perdidos/.gitkeep
-*.jpg
+node_modules
+.env
+.DS_Store
